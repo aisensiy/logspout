@@ -1,0 +1,11 @@
+FROM gliderlabs/alpine:3.1
+CMD ["/bin/logspout"]
+VOLUME /mnt/routes
+EXPOSE 8000
+
+ENV GOPATH /go
+RUN apk-install go git mercurial
+COPY . /go/src/github.com/sjkyspy/stacks/logspout
+RUN cd /go/src/github.com/sjkyspy/stacks/logspout \
+	&& go get \
+	&& go build -ldflags "-X main.Version dev" -o /bin/logspout

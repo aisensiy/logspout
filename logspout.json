@@ -1,0 +1,30 @@
+{
+  "id": "logspout",
+  "cpus": 0.1,
+  "mem": 64,
+  "instances": 1,
+  "args": ["syslog://192.168.50.4:31514"],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "{{DEV_REGISTRY}}cde/logspout",
+      "network": "BRIDGE",
+      "forcePullImage": true,
+      "portMappings": [
+         { "containerPort": 3306 }
+      ]
+    },
+    "volumes": [
+      {
+        "containerPath": "/tmp/docker.sock",
+        "hostPath": "/var/run/docker.sock",
+        "mode": "RW"
+      }
+    ]
+  },
+  "env": {
+    "LOGSPOUT": "ignore",
+    "DEBUG": "1"
+  },
+  "constraints": [["hostname", "UNIQUE"]]
+}
